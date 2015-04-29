@@ -1,0 +1,23 @@
+<table border=1>
+  <tr>
+    <th>GUID</th>
+    <th>Site</th>
+    <th>Host</th>
+    <th>User</th>
+    <th>State</th>
+    <th>Count</th>
+  <% for info in scans %>
+    <% if info.state == "STALE" %>
+    <tr bgcolor="#FF0000">
+    <% else %>
+    <tr>
+    <% end %>
+      <td><%= info.guid %></td>
+      <td><%= info.site %></td>
+      <td><%= info.host %></td>
+      <td><%= info.user %></td>
+      <td><%= info.state %></td>
+      <td><%= info.count %></td>
+    </tr>
+  <% end %>
+</ul>
