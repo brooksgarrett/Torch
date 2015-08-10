@@ -23,7 +23,10 @@ r.zrangebyscore("heartbeat", 0, t.to_i - 360).each do |scan|
   r.multi do
     r.srem("scans:active", scan)
     r.zrem("heartbeat", scan)
-    r.zincrby("nodes:count", -1, info.host)
+    score = r.zincrby("nodes:count", -1, info.host)
+    if (score == 0)
+      r.srem("nodes:active", info.host)
+    end
     r.set("scan:#{scan}", info.to_json)
   end
 end

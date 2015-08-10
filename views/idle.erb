@@ -1,0 +1,9 @@
+<table border=1>
+  <tr>
+    <th>Machine</th>
+  <% for node in nodes %>
+    <tr>
+      <td><a href="/rdc/<%= node %>"><%= node %></a></td>
+    </tr>
+  <% end %>
+</ul>

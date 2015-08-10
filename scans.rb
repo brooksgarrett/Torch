@@ -69,4 +69,11 @@ class TorchDB
     util = @r.scard("scans:active").to_f / @r.scard("nodes:known").to_f
     return util * 100
   end
+  def list_idle_nodes()
+    scans = Array.new
+    @r.sdiff("nodes:known", "nodes:active").each { |h|
+      scans.push h
+    }
+    return scans
+  end
 end

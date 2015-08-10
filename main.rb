@@ -6,12 +6,12 @@ require_relative 'scans'
 class TorchApp < Sinatra::Base
   def initialize
     @db = TorchDB.new("localhost")
-    super(self)
+    super()
   end
-  configure do
-    set :static, true
-    set :public_folder, File.dirname(__FILE__) + '/static'
-  end
+#  configure do
+#    set :static, true
+#    set :public_folder, File.dirname(__FILE__) + '/static'
+#  end
   get '/' do
     'Basic Hello'
   end
@@ -24,5 +24,13 @@ class TorchApp < Sinatra::Base
     data = TorchInfo.new(JSON.parse request.body.read)
     @db.update(data)
     halt 200
+  end
+  get '/idle' do
+    data = @db.list_idle_nodes()
+    erb :idle, :locals => {:nodes => data }
+  end
+  get '/rdc/:node' do
+    headers "Content-Disposition" => "attachment; filename=#{params['node']}.rdp"
+    erb :rdc, :layout => false, :content_type => 'application/octet-stream', :locals => {:node => params['node']}
   end
 end
